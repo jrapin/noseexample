@@ -5,7 +5,9 @@ Created on Fri Dec  4 17:05:53 2015
 """
 
 import numpy as np
-
+# we will use genty to avoid code duplication
+from unittest import TestCase
+import genty
 
 # inside a package, use . to import a module in the current folder, ".." for something in the above folder, etc.
 from . import _core
@@ -37,3 +39,32 @@ def test_get_figures_small():
     expected = [0, 2, 3, 0]
     np.testing.assert_equal(code.digits, expected, err_msg="Wrong digits for 3 digit long number"
                             "expected %s, got %s" % (expected, code.digits))
+
+
+# the syntax is a bit more complicated, but it is always the same...
+# we create a class, and the tests are the methods from this class
+@genty.genty
+class CodeTests(TestCase):
+    
+    # here we define several cases in which to run the tests:
+    # in the style: name_of_the_test(code_value, error)
+    @genty.genty_dataset(
+        standard=(1230, None),
+        typeerror=("whatever", TypeError),
+        moredigits=(51230, ValueError)
+    )
+    def test_code_initialization(self, code_value, error):
+        if error is None:  # if no error to raise, just try the initialization
+            _core.Code(code_value)
+        else:  # otherwise check that it raises the error
+            np.testing.assert_raises(error, _core.Code, code_value)
+    
+    
+    @genty.genty_dataset(
+        standard=(1230, [1, 2, 3, 0]),
+        small=(230, [0, 2, 3, 0]),
+    ) 
+    def test_get_figures_small(self, code_value, expected):
+        code = _core.Code(code_value)
+        np.testing.assert_equal(code.digits, expected, err_msg="Wrong digits for 3 digit long number"
+                                "expected %s, got %s" % (expected, code.digits))
