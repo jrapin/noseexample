@@ -13,10 +13,15 @@ class Code(object):
         # raise an exception if the input is incorrect (make it as explicit as possible)
         if not isinstance(number, int):
             raise TypeError("Expected an int but got an %s instead" % type(number))
+        # check that it has 4 digits
+        if number > 9999:
+            raise ValueError("Number %s has more than 4 digits" % number)
         # save the number as a "private" variable (variables starting by "_" are considered private)
         self._number = number
     
     @property  # this makes digits act as an attribute instead of a method
     def digits(self):
         # convert number as a string, iterate on the letters, and reconvert each digit as a integer
-        return [int(x) for x in "%s" % self._number]
+        last_digits = [int(x) for x in "%s" % self._number]
+        # pad with 0 for the remaining digits
+        return [0] * (4 - len(last_digits)) + last_digits

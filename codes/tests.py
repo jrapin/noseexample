@@ -51,7 +51,9 @@ class CodeTests(TestCase):
     @genty.genty_dataset(
         standard=(1230, None),
         typeerror=("whatever", TypeError),
-        moredigits=(51230, ValueError)
+        moredigits=(51230, ValueError),
+        limit_up=(10000, ValueError), # let us test limit cases
+        limit_down=(9999, None),
     )
     def test_code_initialization(self, code_value, error):
         if error is None:  # if no error to raise, just try the initialization
@@ -63,6 +65,7 @@ class CodeTests(TestCase):
     @genty.genty_dataset(
         standard=(1230, [1, 2, 3, 0]),
         small=(230, [0, 2, 3, 0]),
+        null=(0, [0, 0, 0, 0]),  # limit case
     ) 
     def test_get_figures_small(self, code_value, expected):
         code = _core.Code(code_value)
