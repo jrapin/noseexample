@@ -44,4 +44,4 @@ class Code(object):
         if not isinstance(other, Code):
             other = Code(other)
         digits = (self.digits + other.digits) % 10
-        return Code(self._number + other._number)
+        return Code(_digits_to_number(digits))

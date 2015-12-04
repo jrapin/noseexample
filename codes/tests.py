@@ -76,7 +76,8 @@ class CodeTests(TestCase):
     @genty.genty_dataset(
         with_int=(1111, 2468),
         with_code=(Code(1111), 2468),
-        big=(Code(3333), 4680),  # limit case
+        big=(Code(3333), 4680),
+        bigger=(Code(9999), 246), 
     ) 
     def test_add(self, to_add, expected):
         code = Code(1357)
