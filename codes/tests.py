@@ -92,3 +92,13 @@ class CodeTests(TestCase):
     def test_digits_to_number(self, expected, digits):
         output = _core._digits_to_number(digits)
         np.testing.assert_equal(output, expected)
+
+    @genty.genty_dataset(
+        small=(230, [0, 2, 1, 7]),
+        down=(1534, [1, 4, 8, 1]),
+        alld_down=(9430, [9, 5, 9, 7]),
+        null=(0, [0, 0, 0, 0]),  # limit case
+    ) 
+    def test_get_positive_shift(self, value, expected):
+        output = Code(value).get_positive_shift()
+        np.testing.assert_equal(output, expected)

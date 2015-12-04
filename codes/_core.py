@@ -45,3 +45,18 @@ class Code(object):
             other = Code(other)
         digits = (self.digits + other.digits) % 10
         return Code(_digits_to_number(digits))
+    
+    
+    def get_positive_shift(self):
+        """Computes the positive difference between one digit and the next in the code sequence.
+        
+        Example
+        -------
+        code = Code(1439)
+        code.get_positive_shift()
+        >>>> [1, 3, 9, 6]
+        """
+        # compute the differences (diff),
+        # take the modulo toget the positive shift (a difference of -2 is equivalent to a difference of 8)
+        # stack the first digit
+        return np.hstack((self.digits[0], np.diff(self.digits) % 10))

@@ -14,9 +14,5 @@ code = Code(987)
 # call it as an attribute, i.e not in this way: code.digits()
 code.digits
 
-# Limit cases: good for tests:=!
-code = Code(9999)
-code = Code(10000)
-
-code = Code(0)
-code.digits
+code = Code(1439)
+code.get_positive_shift()
