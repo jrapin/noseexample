@@ -11,6 +11,7 @@ import genty
 
 # inside a package, use . to import a module in the current folder, ".." for something in the above folder, etc.
 from . import _core
+from ._core import Code
 
 
 def test_code_initialization():
@@ -61,7 +62,6 @@ class CodeTests(TestCase):
         else:  # otherwise check that it raises the error
             np.testing.assert_raises(error, _core.Code, code_value)
     
-    
     @genty.genty_dataset(
         standard=(1230, [1, 2, 3, 0]),
         small=(230, [0, 2, 3, 0]),
@@ -71,3 +71,13 @@ class CodeTests(TestCase):
         code = _core.Code(code_value)
         np.testing.assert_equal(code.digits, expected, err_msg="Wrong digits for 3 digit long number"
                                 "expected %s, got %s" % (expected, code.digits))
+    
+    @genty.genty_dataset(
+        with_int=(1111, 2468),
+        with_code=(Code(1111), 2468),
+        big=(Code(3333), 4680),  # limit case
+    ) 
+    def test_add(self, to_add, expected):
+        code = Code(1357)
+        output = code + to_add
+        np.testing.assert_equal(output._number, expected)

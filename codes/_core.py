@@ -3,7 +3,7 @@
 Cardiologs Technologies - All rights reserved
 Created on Fri Dec  4 16:58:32 2015
 """
-
+import numpy as np
 
 class Code(object):
     """4 digits code object
@@ -25,3 +25,8 @@ class Code(object):
         last_digits = [int(x) for x in "%s" % self._number]
         # pad with 0 for the remaining digits
         return [0] * (4 - len(last_digits)) + last_digits
+
+    
+    # overload the + operator. Same thing would be done with * using __mult__, etc...
+    def __add__(self, other):
+        return Code(self._number + other._number)
