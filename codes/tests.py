@@ -67,10 +67,11 @@ class CodeTests(TestCase):
         small=(230, [0, 2, 3, 0]),
         null=(0, [0, 0, 0, 0]),  # limit case
     ) 
-    def test_get_figures_small(self, code_value, expected):
+    def test_get_digits(self, code_value, expected):
         code = _core.Code(code_value)
-        np.testing.assert_equal(code.digits, expected, err_msg="Wrong digits for 3 digit long number"
-                                "expected %s, got %s" % (expected, code.digits))
+        # it is a better practice to test array with assert_array_equal: the error message is more explicit
+        np.testing.assert_array_equal(code.digits, expected, err_msg="Wrong digits for 3 digit long number"
+                                      "expected %s, got %s" % (expected, code.digits))
     
     @genty.genty_dataset(
         with_int=(1111, 2468),
@@ -81,3 +82,12 @@ class CodeTests(TestCase):
         code = Code(1357)
         output = code + to_add
         np.testing.assert_equal(output._number, expected)
+    
+    @genty.genty_dataset(
+        standard=(1230, [1, 2, 3, 0]),  # this is the exact same datasets as for testing digits method
+        small=(230, [0, 2, 3, 0]),
+        null=(0, [0, 0, 0, 0]),  # limit case
+    ) 
+    def test_digits_to_number(self, expected, digits):
+        output = _core._digits_to_number(digits)
+        np.testing.assert_equal(output, expected)
