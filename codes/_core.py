@@ -15,3 +15,8 @@ class Code(object):
             raise TypeError("Expected an int but got an %s instead" % type(number))
         # save the number as a "private" variable (variables starting by "_" are considered private)
         self._number = number
+    
+    @property  # this makes digits act as an attribute instead of a method
+    def digits(self):
+        # convert number as a string, iterate on the letters, and reconvert each digit as a integer
+        return [int(x) for x in "%s" % self._number]
